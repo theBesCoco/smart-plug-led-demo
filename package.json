@@ -1,0 +1,15 @@
+{
+  "name": "smart-plug-led-demo",
+  "version": "1.0.0",
+  "description": "Smart plug website demo using ESP32 and a low-voltage LED test load",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
