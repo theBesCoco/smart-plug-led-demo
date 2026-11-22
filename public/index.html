@@ -1,155 +1,216 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Plug | LED Test</title>
-  <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: system-ui, sans-serif; color: #eef3ff;
-      background: radial-gradient(circle at top, #24365c, #0b1020 58%);
-      min-height: 100vh; padding: 24px;
-    }
-    .wrap { max-width: 760px; margin: auto; }
-    header { display:flex; justify-content:space-between; gap:12px; align-items:center; }
-    h1 { font-size: clamp(26px, 5vw, 38px); margin: 8px 0; }
-    .tag { color:#aab9d8; font-size:14px; }
-    .card {
-      background: rgba(22,31,54,.92); border:1px solid #344568;
-      border-radius:22px; padding:22px; margin-top:20px;
-      box-shadow: 0 18px 50px #0005;
-    }
-    .row { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-    .status { display:flex; align-items:center; gap:12px; font-size:20px; font-weight:700; }
-    .lamp { width:18px; height:18px; border-radius:50%; background:#65718a; box-shadow:0 0 0 5px #65718a22; }
-    .lamp.on { background:#40e58b; box-shadow:0 0 22px #40e58b; }
-    .plug {
-      width:150px; height:170px; margin:24px auto; border-radius:24px;
-      background:linear-gradient(145deg,#e6ebf4,#9eabc2); color:#26334b;
-      display:grid; place-items:center; position:relative;
-      box-shadow: inset 5px 5px 12px #fff8, inset -7px -7px 15px #53617b55, 0 18px 28px #0005;
-    }
-    .socket { width:92px; height:92px; border-radius:50%; background:#34415a; position:relative; }
-    .socket:before,.socket:after { content:""; position:absolute; top:26px; width:9px; height:25px; border-radius:8px; background:#111827; }
-    .socket:before { left:25px; transform:rotate(12deg); }
-    .socket:after { right:25px; transform:rotate(-12deg); }
-    .socket i { position:absolute; width:10px; height:10px; border-radius:50%; background:#111827; left:41px; bottom:18px; }
-    .plug.lit { box-shadow:0 0 35px #40e58b66, inset 5px 5px 12px #fff8, inset -7px -7px 15px #53617b55; }
-    button {
-      border:0; border-radius:12px; padding:13px 20px; font-size:16px;
-      font-weight:700; cursor:pointer; color:#071321; background:#40e58b;
-    }
-    button.off { background:#ff7185; }
-    button:disabled { opacity:.5; cursor:wait; }
-    input {
-      width:110px; padding:11px; border-radius:10px; border:1px solid #506184;
-      background:#0e172b; color:white; font-size:16px;
-    }
-    .muted { color:#aab9d8; font-size:14px; }
-    .history { padding-left:20px; line-height:1.9; }
-    .warning { border-left:4px solid #ffbf47; background:#332b1b; padding:13px 15px; border-radius:10px; color:#ffe3a6; line-height:1.6; }
-    @media(max-width:520px) { body{padding:14px} .card{padding:17px} }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Plug</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#101a30,#253c60);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 390px;
+  background: #192943;
+  padding: 30px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 15px 40px #0005;
+}
+
+h1 { margin: 0 0 8px; font-size: 30px; }
+.subtitle { color: #aabbd4; font-size: 14px; }
+
+.plug {
+  width: 145px;
+  height: 155px;
+  margin: 30px auto 20px;
+  background: #dce5f1;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px #0005;
+}
+
+.socket {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #35445d;
+  position: relative;
+}
+
+.socket:before, .socket:after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  width: 9px;
+  height: 25px;
+  border-radius: 8px;
+  background: #111827;
+}
+
+.socket:before { left: 23px; }
+.socket:after { right: 23px; }
+
+#lamp {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #718096;
+  margin-right: 8px;
+}
+
+#lamp.on {
+  background: #36e58b;
+  box-shadow: 0 0 15px #36e58b;
+}
+
+.status {
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+button {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+#onBtn { background: #16a34a; }
+#offBtn { background: #dc3545; }
+
+button:disabled {
+  opacity: .5;
+  cursor: wait;
+}
+
+.connection {
+  margin-top: 25px;
+  color: #aabbd4;
+  font-size: 13px;
+}
+
+</style>
 </head>
+
 <body>
-  <main class="wrap">
-    <header>
-      <div>
-        <div class="tag">SMART HOME • ESP32</div>
-        <h1>ปลั๊กไฟอัจฉริยะ</h1>
-        <div class="tag">โหมดทดสอบด้วยไฟ LED แรงดันต่ำ</div>
-      </div>
-      <div class="tag">DEMO v1.0</div>
-    </header>
+<div class="container">
 
-    <section class="card">
-      <div class="row">
-        <div class="status"><span id="lamp" class="lamp"></span><span id="stateText">กำลังเชื่อมต่อ...</span></div>
-        <span id="device" class="tag">Smart Plug (LED Test)</span>
-      </div>
-      <div id="plug" class="plug"><div class="socket"><i></i></div></div>
-      <div class="row">
-        <label class="muted" for="minutes">ตั้งเวลาปิด (นาที)<br><input id="minutes" type="number" min="0" max="1440" value="0"></label>
-        <div class="row">
-          <button id="onBtn" onclick="setSwitch(true)">เปิด LED</button>
-          <button id="offBtn" class="off" onclick="setSwitch(false)">ปิด LED</button>
-        </div>
-      </div>
-      <p class="muted" id="timerText">0 = เปิดค้างจนกว่าจะสั่งปิด</p>
-    </section>
+  <h1>SMART PLUG</h1>
+  <div class="subtitle">ระบบควบคุมปลั๊กไฟอัจฉริยะ</div>
 
-    <section class="card">
-      <div class="row"><h2>สถานะระบบ</h2><span id="connection" class="tag">กำลังตรวจสอบ...</span></div>
-      <p class="muted">เว็บไซต์ → Render Server → ESP32 → LED</p>
-      <div class="warning">
-        ใช้สำหรับทดลองกับ LED แรงดันต่ำเท่านั้น ห้ามต่อไฟบ้าน 220V เข้ากับวงจรทดลองนี้
-        การทำปลั๊กไฟใช้งานจริงต้องออกแบบอุปกรณ์ป้องกันและติดตั้งโดยผู้มีความรู้/ช่างไฟฟ้า
-      </div>
-    </section>
+  <div class="plug">
+    <div class="socket"></div>
+  </div>
 
-    <section class="card">
-      <h2>ประวัติการทำงาน</h2>
-      <ul id="history" class="history"><li class="muted">ยังไม่มีข้อมูล</li></ul>
-    </section>
-  </main>
+  <div class="status">
+    <span id="lamp"></span>
+    <span id="stateText">กำลังเชื่อมต่อ...</span>
+  </div>
+
+  <div class="buttons">
+    <button id="onBtn" onclick="setSwitch(true)">ON</button>
+    <button id="offBtn" onclick="setSwitch(false)">OFF</button>
+  </div>
+
+  <div class="connection" id="connection">
+    กำลังตรวจสอบระบบ...
+  </div>
+
+</div>
 
 <script>
-  const $ = (id) => document.getElementById(id);
-  let busy = false;
+const $ = id => document.getElementById(id);
+let busy = false;
 
-  async function refresh() {
-    try {
-      const response = await fetch("/api/state", { cache: "no-store" });
-      if (!response.ok) throw new Error("server");
-      const s = await response.json();
-      $("connection").textContent = "Server ออนไลน์";
-      $("device").textContent = s.deviceName;
-      $("lamp").classList.toggle("on", s.on);
-      $("plug").classList.toggle("lit", s.on);
-      $("stateText").textContent = s.on ? "เปิดอยู่" : "ปิดอยู่";
-      $("timerText").textContent = s.remainingSeconds === null
-        ? (s.on ? "เปิดค้างจนกว่าจะสั่งปิด" : "ไม่มีการตั้งเวลาปิด")
-        : `เหลือเวลา ${Math.floor(s.remainingSeconds/60)} นาที ${s.remainingSeconds%60} วินาที`;
-      $("history").innerHTML = s.history.length
-        ? s.history.map(x => `<li>${new Date(x.time).toLocaleTimeString("th-TH")} — ${escapeHtml(x.message)}</li>`).join("")
-        : "<li class='muted'>ยังไม่มีประวัติ</li>";
-    } catch (e) {
-      $("connection").textContent = "เชื่อมต่อ Server ไม่ได้";
-      $("stateText").textContent = "ไม่สามารถอ่านสถานะได้";
-    }
+async function refresh() {
+  try {
+    const response = await fetch("/api/state", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) throw new Error();
+
+    const data = await response.json();
+    const relay = data.channels[0];
+
+    $("lamp").classList.toggle("on", relay.on);
+
+    $("stateText").textContent =
+      relay.on ? "เปิดอยู่" : "ปิดอยู่";
+
+    $("connection").textContent =
+      "Server ออนไลน์ | Relay 1";
+
+  } catch (error) {
+    $("stateText").textContent = "ไม่สามารถอ่านสถานะได้";
+    $("connection").textContent = "Server ไม่ออนไลน์";
+  }
+}
+
+async function setSwitch(on) {
+  if (busy) return;
+
+  busy = true;
+  $("onBtn").disabled = true;
+  $("offBtn").disabled = true;
+
+  try {
+    const response = await fetch("/api/switch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        channel: 1,
+        on: on,
+        minutes: 0
+      })
+    });
+
+    if (!response.ok) throw new Error();
+
+    await refresh();
+
+  } catch (error) {
+    $("connection").textContent = "ส่งคำสั่งไม่สำเร็จ";
   }
 
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, c => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-    }[c]));
-  }
+  busy = false;
+  $("onBtn").disabled = false;
+  $("offBtn").disabled = false;
+}
 
-  async function setSwitch(on) {
-    if (busy) return;
-    busy = true;
-    $("onBtn").disabled = $("offBtn").disabled = true;
-    try {
-      const minutes = Math.max(0, Math.min(1440, Number($("minutes").value) || 0));
-      const r = await fetch("/api/switch", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ on, minutes: on ? minutes : 0 })
-      });
-      if (!r.ok) throw new Error("request");
-      await refresh();
-    } catch (e) {
-      $("connection").textContent = "ส่งคำสั่งไม่สำเร็จ";
-    } finally {
-      busy = false;
-      $("onBtn").disabled = $("offBtn").disabled = false;
-    }
-  }
-
-  refresh();
-  setInterval(refresh, 2000);
+refresh();
+setInterval(refresh, 2000);
 </script>
+
 </body>
 </html>
